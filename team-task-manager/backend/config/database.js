@@ -15,7 +15,7 @@ const pool = mysql.createPool({
 
   // Aiven requires SSL
   ssl: {
-    rejectUnauthorized: true
+    rejectUnauthorized: false
   }
 });
 
