@@ -17,6 +17,9 @@ const taskRoutes = require('./routes/tasks');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust Proxy (Required for Render/Heroku SSL)
+app.set('trust proxy', 1);
+
 // Session store configuration
 const sessionStore = new MySQLStore({
     clearExpired: true,
@@ -26,7 +29,7 @@ const sessionStore = new MySQLStore({
 
 // Middleware
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    origin: process.env.CORS_ORIGIN || 'https://your-frontend-url.onrender.com',
     credentials: true
 }));
 
@@ -43,8 +46,8 @@ app.use(session({
     cookie: {
         maxAge: parseInt(process.env.SESSION_MAX_AGE) || 86400000, // 24 hours
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-        sameSite: 'lax'
+        secure: true,  // HTTPS only in production
+        sameSite: 'none'
     }
 }));
 

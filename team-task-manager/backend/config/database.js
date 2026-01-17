@@ -13,10 +13,15 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
 
-  // Aiven requires SSL
-  ssl: {
-    rejectUnauthorized: false
-  }
+  connectionLimit: 10,
+  queueLimit: 0,
+
+  // SSL configuration (Required for production/Aiven, disabled for local)
+  ...(process.env.NODE_ENV === 'production' && {
+    ssl: {
+      rejectUnauthorized: false
+    }
+  })
 });
 
 // Test database connection
